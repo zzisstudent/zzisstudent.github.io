@@ -237,26 +237,22 @@
   
     <div class="site-search">
       
-  
-  <div class="algolia-popup popup search-popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
-
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
-
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
     <span class="popup-btn-close">
       <i class="fa fa-times-circle"></i>
     </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="Searching..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
   </div>
-
+  <div id="local-search-result"></div>
+</div>
 
 
 
@@ -397,7 +393,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install --save hexo-helper-live2d</span><br></pre></td></tr></table></figure>
 
 <p>在Blog Hexo配置文件中(<strong>不是主题配置文件</strong>)添加以下下配置项:<br><code>_config.yml</code></p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"># Live2D</span><br><span class="line"># https:&#x2F;&#x2F;github.com&#x2F;EYHN&#x2F;hexo-helper-live2d</span><br><span class="line">live2d:</span><br><span class="line">enable: true</span><br><span class="line">pluginRootPath: live2dw&#x2F;</span><br><span class="line">pluginJsPath: lib&#x2F;</span><br><span class="line">pluginModelPath: assets&#x2F; Relative)</span><br><span class="line"></span><br><span class="line"># 脚本加载源</span><br><span class="line">scriptFrom: local # 默认从本地加载脚本</span><br><span class="line"># scriptFrom: jsdelivr # 从 jsdelivr CDN 加载脚本</span><br><span class="line"># scriptFrom: unpkg # 从 unpkg CDN 加载脚本</span><br><span class="line"># scriptFrom: https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;live2d-widget@3.x&#x2F;lib&#x2F;L2Dwidget.min.js # 从自定义地址加载脚本</span><br><span class="line">tagMode: false # 只在有 &#123;&#123; live2d() &#125;&#125; 标签的页面上加载 &#x2F; 在所有页面上加载</span><br><span class="line">log: false # 是否在控制台打印日志</span><br><span class="line"></span><br><span class="line"># 选择看板娘模型</span><br><span class="line">model:</span><br><span class="line">    use: live2d-widget-model-shizuku  # npm package的名字</span><br><span class="line">    # use: wanko # &#x2F;live2d_models&#x2F; 目录下的模型文件夹名称</span><br><span class="line">    # use: .&#x2F;wives&#x2F;wanko # 站点根目录下的模型文件夹名称</span><br><span class="line">    # use: https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;live2d-widget-model-wanko@1.0.5&#x2F;assets&#x2F;wanko.model.json # 自定义网络数据源</span><br><span class="line">display:</span><br><span class="line">    position: left # 显示在左边还是右边</span><br><span class="line">    width: 100 # 宽度</span><br><span class="line">    height: 180 # 高度</span><br><span class="line">mobile:</span><br><span class="line">    show: false</span><br><span class="line">react:</span><br><span class="line">    opacityDefault: 0.7 # 默认透明度</span><br></pre></td></tr></table></figure>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Live2D</span></span><br><span class="line"><span class="comment"># https://github.com/EYHN/hexo-helper-live2d</span></span><br><span class="line">live2d:</span><br><span class="line"><span class="built_in">enable</span>: <span class="literal">true</span></span><br><span class="line">pluginRootPath: live2dw/</span><br><span class="line">pluginJsPath: lib/</span><br><span class="line">pluginModelPath: assets/ Relative)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 脚本加载源</span></span><br><span class="line">scriptFrom: <span class="built_in">local</span> <span class="comment"># 默认从本地加载脚本</span></span><br><span class="line"><span class="comment"># scriptFrom: jsdelivr # 从 jsdelivr CDN 加载脚本</span></span><br><span class="line"><span class="comment"># scriptFrom: unpkg # 从 unpkg CDN 加载脚本</span></span><br><span class="line"><span class="comment"># scriptFrom: https://cdn.jsdelivr.net/npm/live2d-widget@3.x/lib/L2Dwidget.min.js # 从自定义地址加载脚本</span></span><br><span class="line">tagMode: <span class="literal">false</span> <span class="comment"># 只在有 &#123;&#123; live2d() &#125;&#125; 标签的页面上加载 / 在所有页面上加载</span></span><br><span class="line"><span class="built_in">log</span>: <span class="literal">false</span> <span class="comment"># 是否在控制台打印日志</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 选择看板娘模型</span></span><br><span class="line">model:</span><br><span class="line">    use: live2d-widget-model-shizuku  <span class="comment"># npm package的名字</span></span><br><span class="line">    <span class="comment"># use: wanko # /live2d_models/ 目录下的模型文件夹名称</span></span><br><span class="line">    <span class="comment"># use: ./wives/wanko # 站点根目录下的模型文件夹名称</span></span><br><span class="line">    <span class="comment"># use: https://cdn.jsdelivr.net/npm/live2d-widget-model-wanko@1.0.5/assets/wanko.model.json # 自定义网络数据源</span></span><br><span class="line">display:</span><br><span class="line">    position: left <span class="comment"># 显示在左边还是右边</span></span><br><span class="line">    width: 100 <span class="comment"># 宽度</span></span><br><span class="line">    height: 180 <span class="comment"># 高度</span></span><br><span class="line">mobile:</span><br><span class="line">    show: <span class="literal">false</span></span><br><span class="line">react:</span><br><span class="line">    opacityDefault: 0.7 <span class="comment"># 默认透明度</span></span><br></pre></td></tr></table></figure>
 
 <p>查看Model形态  </p>
 <blockquote>
@@ -740,6 +736,19 @@
 
 
 
+<!-- LOCAL: You can save these files to your site and update links -->
+    
+        
+        <link rel="stylesheet" href="https://aimingoo.github.io/gitmint/style/default.css">
+        <script src="https://aimingoo.github.io/gitmint/dist/gitmint.browser.js"></script>
+    
+<!-- END LOCAL -->
+
+    
+
+    
+
+
 
 
 
@@ -1065,19 +1074,6 @@
   </script>
 
 
-
-
-  
-  
-  
-  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
-
-  
-  
-  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
-  
-
-  <script src="/js/src/algolia-search.js?v=5.1.4"></script>
 
 
 
