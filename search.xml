@@ -13,7 +13,7 @@
 <h4 id="定制化需求"><a href="#定制化需求" class="headerlink" title="定制化需求"></a>定制化需求</h4><p><strong>注意事项</strong>：主目录，即Blog目录下的_config.yml是Hexo的配置文件。themes目录下的_config.yml是主题配置目录。<br>相关命令：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean <span class="comment">#清除缓存</span></span><br><span class="line">hexo g <span class="comment">#生成静态网页文件</span></span><br><span class="line">hexo s <span class="comment">#在本地查看，默认为http://localhost:4000/</span></span><br><span class="line">hexo d <span class="comment">#部署到GitHub.io</span></span><br></pre></td></tr></table></figure>
 
-<h4 id="美化Blog页面"><a href="#美化Blog页面" class="headerlink" title="美化Blog页面"></a>美化Blog页面</h4><ul>
+<h4 id="三-美化Blog页面"><a href="#三-美化Blog页面" class="headerlink" title="三. 美化Blog页面"></a>三. 美化Blog页面</h4><ul>
 <li><h5 id="添加看板娘"><a href="#添加看板娘" class="headerlink" title="添加看板娘"></a>添加看板娘</h5><p>在Blog根目录下执行以下命令安装依赖：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install --save hexo-helper-live2d</span><br></pre></td></tr></table></figure>
 
@@ -39,7 +39,7 @@
 </li>
 </ul>
 <p><em>美化Blog参考文档</em>：<br><a href="http://yearito.cn/posts/hexo-theme-beautify.html" target="_blank" rel="noopener">http://yearito.cn/posts/hexo-theme-beautify.html</a></p>
-<h3 id="如何写Blog"><a href="#如何写Blog" class="headerlink" title="如何写Blog"></a>如何写Blog</h3><p>Blog主目录下执行<code>hexo new &quot;如何基于GitHub+Hexo搭建Blog&quot;</code><br>在source/_posts目录下修改md文件<br>更新分类与标签  </p>
+<h3 id="四-如何写Blog"><a href="#四-如何写Blog" class="headerlink" title="四. 如何写Blog"></a>四. 如何写Blog</h3><p>Blog主目录下执行<code>hexo new &quot;如何基于GitHub+Hexo搭建Blog&quot;</code><br>在source/_posts目录下修改md文件<br>更新分类与标签  </p>
 <blockquote>
 <p>categories: “环境搭建”<br>tags: Blog, ENV</p>
 </blockquote>
