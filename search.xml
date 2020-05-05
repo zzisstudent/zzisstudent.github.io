@@ -1,21 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/uncategorized/2020/05/02/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+    <title>如何基于GitHub+Hexo搭建Blog</title>
+    <url>/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/2020/05/03/%E5%A6%82%E4%BD%95%E5%9F%BA%E4%BA%8EGitHub-Hexo%E6%90%AD%E5%BB%BABlog/</url>
+    <content><![CDATA[<p>本文主要描述如何基于GitHub与Hexo搭建个人Blog<br>一. 创建GitHub仓库，并启用Pages<br>二. 配置Hexo，选择Next Theme<br>三. 美化Blog页面<br>四. 如何写Blog  </p>
+<h3 id="一-创建GitHub仓库，并启用Pages"><a href="#一-创建GitHub仓库，并启用Pages" class="headerlink" title="一. 创建GitHub仓库，并启用Pages"></a>一. 创建GitHub仓库，并启用Pages</h3><p>这部分没有额外要写的，只是强调一点，项目名称与用户名应该一致，例如用户名为user，则项目名为user.github.io</p>
+<h3 id="二-配置Hexo，选择Next-Theme"><a href="#二-配置Hexo，选择Next-Theme" class="headerlink" title="二. 配置Hexo，选择Next Theme"></a>二. 配置Hexo，选择Next Theme</h3><p><strong>前置条件</strong>：<br>本地安装Git与NodeJS<br>创建Blog目录  </p>
+<h4 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h4 id="初始化目录"><a href="#初始化目录" class="headerlink" title="初始化目录"></a>初始化目录</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo init</span><br><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<h4 id="定制化需求"><a href="#定制化需求" class="headerlink" title="定制化需求"></a>定制化需求</h4><p><strong>注意事项</strong>：主目录，即Blog目录下的_config.yml是Hexo的配置文件。themes目录下的_config.yml是主题配置目录。<br>相关命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean <span class="comment">#清除缓存</span></span><br><span class="line">hexo g <span class="comment">#生成静态网页文件</span></span><br><span class="line">hexo s <span class="comment">#在本地查看，默认为http://localhost:4000/</span></span><br><span class="line">hexo d <span class="comment">#部署到GitHub.io</span></span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<h4 id="美化Blog页面"><a href="#美化Blog页面" class="headerlink" title="美化Blog页面"></a>美化Blog页面</h4><ul>
+<li><h5 id="添加看板娘"><a href="#添加看板娘" class="headerlink" title="添加看板娘"></a>添加看板娘</h5><p>在Blog根目录下执行以下命令安装依赖：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install --save hexo-helper-live2d</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<p>在Blog Hexo配置文件中(<strong>不是主题配置文件</strong>)添加以下下配置项:<br><code>_config.yml</code></p>
+  <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Live2D</span><br><span class="line"># https:&#x2F;&#x2F;github.com&#x2F;EYHN&#x2F;hexo-helper-live2d</span><br><span class="line">live2d:</span><br><span class="line">enable: true</span><br><span class="line">pluginRootPath: live2dw&#x2F;</span><br><span class="line">pluginJsPath: lib&#x2F;</span><br><span class="line">pluginModelPath: assets&#x2F; Relative)</span><br><span class="line"></span><br><span class="line"># 脚本加载源</span><br><span class="line">scriptFrom: local # 默认从本地加载脚本</span><br><span class="line"># scriptFrom: jsdelivr # 从 jsdelivr CDN 加载脚本</span><br><span class="line"># scriptFrom: unpkg # 从 unpkg CDN 加载脚本</span><br><span class="line"># scriptFrom: https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;live2d-widget@3.x&#x2F;lib&#x2F;L2Dwidget.min.js # 从自定义地址加载脚本</span><br><span class="line">tagMode: false # 只在有 &#123;&#123; live2d() &#125;&#125; 标签的页面上加载 &#x2F; 在所有页面上加载</span><br><span class="line">log: false # 是否在控制台打印日志</span><br><span class="line"></span><br><span class="line"># 选择看板娘模型</span><br><span class="line">model:</span><br><span class="line">    use: live2d-widget-model-shizuku  # npm package的名字</span><br><span class="line">    # use: wanko # &#x2F;live2d_models&#x2F; 目录下的模型文件夹名称</span><br><span class="line">    # use: .&#x2F;wives&#x2F;wanko # 站点根目录下的模型文件夹名称</span><br><span class="line">    # use: https:&#x2F;&#x2F;cdn.jsdelivr.net&#x2F;npm&#x2F;live2d-widget-model-wanko@1.0.5&#x2F;assets&#x2F;wanko.model.json # 自定义网络数据源</span><br><span class="line">display:</span><br><span class="line">    position: left # 显示在左边还是右边</span><br><span class="line">    width: 100 # 宽度</span><br><span class="line">    height: 180 # 高度</span><br><span class="line">mobile:</span><br><span class="line">    show: false</span><br><span class="line">react:</span><br><span class="line">    opacityDefault: 0.7 # 默认透明度</span><br></pre></td></tr></table></figure>
+
+<p>查看Model形态  </p>
+<blockquote>
+<p>登录<a href="https://huaji8.top/post/live2d-plugin-2.0/" target="_blank" rel="noopener">https://huaji8.top/post/live2d-plugin-2.0/</a>查看Model的样式</p>
+</blockquote>
+<p>修改_config.yml  </p>
+<blockquote>
+<p>live2d-widget-model-{modelName}</p>
+</blockquote>
+<p>下载NPM包  </p>
+<blockquote>
+<p>npm install live2d-widget-model-{modelName}</p>
+</blockquote>
+<p>使其生效(本地查看)</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo g</span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+</li>
+<li><h5 id="添加粒子背景效果"><a href="#添加粒子背景效果" class="headerlink" title="添加粒子背景效果"></a>添加粒子背景效果</h5><p>最新版Next主题中已经包含相关效果<br>修改three_waves的值即可，<code>three_waves: true</code>  </p>
+</li>
+</ul>
+<p><em>美化Blog参考文档</em>：<br><a href="http://yearito.cn/posts/hexo-theme-beautify.html" target="_blank" rel="noopener">http://yearito.cn/posts/hexo-theme-beautify.html</a></p>
+<h3 id="如何写Blog"><a href="#如何写Blog" class="headerlink" title="如何写Blog"></a>如何写Blog</h3><p>Blog主目录下执行<code>hexo new &quot;如何基于GitHub+Hexo搭建Blog&quot;</code><br>在source/_posts目录下修改md文件<br>更新分类与标签  </p>
+<blockquote>
+<p>categories: “环境搭建”<br>tags: Blog, ENV</p>
+</blockquote>
 ]]></content>
+      <categories>
+        <category>环境搭建</category>
+      </categories>
+      <tags>
+        <tag>Blog</tag>
+        <tag>ENV</tag>
+        <tag>Hexo</tag>
+      </tags>
   </entry>
 </search>
