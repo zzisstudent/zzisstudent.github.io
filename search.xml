@@ -91,4 +91,47 @@
         <tag>Hexo</tag>
       </tags>
   </entry>
+  <entry>
+    <title>如何在本地生成ceph-container的docker image</title>
+    <url>/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/2020/05/11/%E5%A6%82%E4%BD%95%E5%9C%A8%E6%9C%AC%E5%9C%B0%E7%94%9F%E6%88%90ceph-container%E7%9A%84docker-image/</url>
+    <content><![CDATA[<p>基于<a href="https://github.com/ceph/ceph-container项目和Ceph" target="_blank" rel="noopener">https://github.com/ceph/ceph-container项目和Ceph</a> octopus进行验证</p>
+<p>Ceph官方有一个ceph-container项目，可以生成ceph docker image。但是因为是通过官方的repo去下载ceph rpm包，这样就无法应用本地代码更新。</p>
+<p>生成官方ceph docker image的命令类似于：<code>make FLAVORS=&quot;octopus-15.2.1,centos,8&quot; build | tee output.log</code>, //这里的tee output.log是为了方便后续查看对比生成的日志差异</p>
+<p>centos,8这里需要注意两个地方，第一，docker hub需要有对应版本的docker image，所以8.1不可以，8或者8.1.1911可以。<br>                            第二，需要去<a href="http://download.ceph.com/rpm-octopus/el8下下载rpm包，如果是8.1.1911路径就变成了http://download.ceph.com/rpm-octopus/el8.1.1911，就会因为找不到路径而报错。" target="_blank" rel="noopener">http://download.ceph.com/rpm-octopus/el8下下载rpm包，如果是8.1.1911路径就变成了http://download.ceph.com/rpm-octopus/el8.1.1911，就会因为找不到路径而报错。</a><br>基于以上，这里只能使用centos,8 </p>
+<p>octopus-15.2.1这里需要注意，需要跟repo里的rpm包前缀一致</p>
+<p>所以这里就需要阅读Makefile并修改</p>
+<p>Makefile的调试： <a href="https://www.cnblogs.com/lotgu/p/5936465.html" target="_blank" rel="noopener">https://www.cnblogs.com/lotgu/p/5936465.html</a><br>命令回显和命令执行：<a href="https://blog.csdn.net/hahachenchen789/article/details/53995990" target="_blank" rel="noopener">https://blog.csdn.net/hahachenchen789/article/details/53995990</a></p>
+]]></content>
+      <categories>
+        <category>环境搭建</category>
+      </categories>
+      <tags>
+        <tag>Blog</tag>
+        <tag>ENV</tag>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>网络性能测试与netperf</title>
+    <url>/uncategorized/2020/07/23/%E7%BD%91%E7%BB%9C%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E4%B8%8Enetperf-1/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>网络性能测试与netperf</title>
+    <url>/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/2017/04/21/%E7%BD%91%E7%BB%9C%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E4%B8%8Enetperf/</url>
+    <content><![CDATA[<p>netperf是一款能够测试网络基准性能的工具。能够用来测试单向的吞吐量以及端对端的延迟。<br>netperf [global options] – [test specific options]<br>global options:<br>-4 使用IPV4<br>-6 使用IPV6<br>-a 本机发送或者接收数据包的对齐大小，默认是8bytes<br>-A 远程机发送或者接收数据包的对齐大小，默认是8bytes<br>-c [rate] 结果中输出CPU利用率以及Service Demand的用时<br>-C [rate] 与-c效果一致，应用于remote端<br>-d 输出debug信息<br>-D 输出临时结果，但必须修改–enable-demo=yes，重新编译才能生效<br>-f G|M|K|g|m|k 设置输出中的Throughout的单位<br>-F fill_file 用于预填充发送buffer，避免send buffer被容易压缩的数据填充，例如0，1<br>-h 帮助页面<br>-H name|ip remote IP<br>-i max,min 为达到当前可信水平所设置的最大最小迭代数（cpu利用率瞬间提高一个档）<br>-I lvl,[intvl] 设置可信水平（默认99）和可信间隔（默认10）<br>-l testlen 测试时间，默认10s，这里需要注意的是，默认单位是s，但是也支持S，M，m, H,h。d|D按理说也应该支持，但一来没试，二来没看源码就不胡说了。<br>-L name|ip， 指明本地测试是跟那个位置在通信，默认是0.0.0.0<br>-o sizespec 设置-a设置的size的offset<br>-O sizespec 同-o<br>-p portnum 指定端口<br>-P 0|1 为1时显示上面一行标题，为0时不显示<br>-s seconds 发送数据之前停止seconds秒<br>-t testname 定义测试类型，支持TCP_STREAM等<br>-v level 跟-P功能类似，区别在于，-P 0显示的是下面的数据，-v 0 只显示最后的吞吐</p>
+<p>大致理了下netperf的参数，现在来看看网络测试的需求。<br>网络性能测试就是看五个指标：</p>
+<p>可用性<br>响应时间<br>网络利用率<br>网络吞吐量<br>网络带宽容量<br>可用性：<br>可用性这块很简单，首要任务就是测试网路通不通，这块直接ping测试，需要注意的是，网络设备跟根据包的大小设置多个不同大小的包缓冲区，因此测试时，有必要使用ping -s size，设置不同size的情况下，网路是否联通。<br>响应时间：<br>一次网络请求到响应，就是一个响应时间。响应时间太大，就会存在卡顿现象。<br>网络利用率：<br>使用时间占总时间的比率。同一时刻只能有一个报文在使用。<br>网络吞吐量：<br>网络吞吐量是指在某个时刻，在网络中的两个节点之间，提供给网络应用的剩余带宽。<br>网络带宽容量：<br>网络两个节点间的最大可用带宽。<br>三种从网络获取数据的方式：</p>
+<p>通过snmp协议直接到网络设备中获取，如net-snmp工具<br>侦听相关的网络性能数据，典型的工具是tcpdump<br>自行产生相应的测试数据，如netperf<br>这次我们使用netperf<br>netperf基于TCP/UDP进行传输。有两种测试模式：批量数据传输（bulk data transfer）模式和请求/应答（request/reponse）模式。<br>netperf以client/server方式工作，server端是netserver，client端是netperf。client端与server端直接，首先建立一个控制连接，传递有关测试配置以及测试结果的信息。控制连接建立之后，再建立一个测试连接，用来进行网络测试。<br>TCP网络性能：<br>netperf可以模拟三种tcp流量模式：<br>1.单个tcp连接，批量传输大量数据<br>2.单个tcp连接，client请求，server应答的方式<br>3.多个tcp连接，每个连接中一对请求/应答的方式<br>UDP网络性能：<br>netperf可以模拟两种udp流量模式：<br>1.从client到server的单向批量传输<br>2.请求/应答的交易方式<br>由于udp传输的不可靠性，要确保发送的缓冲区大小不大于接收的缓冲区大小。</p>
+<p>再后就是根据实际使用情况，选择-t模式了</p>
+<p><a href="https://www.ibm.com/developerworks/cn/linux/l-netperf/" target="_blank" rel="noopener">netperf 与网络性能测量</a><br><a href="http://www.netperf.org/netperf/training/Netperf.html" target="_blank" rel="noopener">netperf training</a></p>
+]]></content>
+      <categories>
+        <category>性能测试</category>
+      </categories>
+      <tags>
+        <tag>netperf</tag>
+        <tag>网络性能测试</tag>
+      </tags>
+  </entry>
 </search>
