@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="K8S,Ceph," />
 
 
 
@@ -79,14 +79,18 @@
 
 
 
-<meta name="description" content="漏船载酒会有时">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Rookie">
-<meta property="og:url" content="http://zzisstudent.github.io/archives/2017/index.html">
+<meta name="description" content="为了能够在K8S环境中像VM或者Barebone一样部署Ceph集群，进行了此次验证(如果只是为了能够在K8S中使用Ceph集群，可以使用Rook进行部署，方式更加友好) 一. K8S中使用Local Volume提供RAW Block Device- 创建Block Device(也可以直接使用host的硬盘)     truncate ~&#x2F;disk.img --size 500M     mk">
+<meta property="og:type" content="article">
+<meta property="og:title" content="K8S中如何使用Local Volumes提供Block Device配置Ceph集群">
+<meta property="og:url" content="http://zzisstudent.github.io/%E5%AD%98%E5%82%A8%E6%B5%8B%E8%AF%95/2020/07/29/K8S%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Local-Volumes%E6%8F%90%E4%BE%9BBlock-Device%E9%85%8D%E7%BD%AECeph%E9%9B%86%E7%BE%A4/index.html">
 <meta property="og:site_name" content="Rookie">
-<meta property="og:description" content="漏船载酒会有时">
+<meta property="og:description" content="为了能够在K8S环境中像VM或者Barebone一样部署Ceph集群，进行了此次验证(如果只是为了能够在K8S中使用Ceph集群，可以使用Rook进行部署，方式更加友好) 一. K8S中使用Local Volume提供RAW Block Device- 创建Block Device(也可以直接使用host的硬盘)     truncate ~&#x2F;disk.img --size 500M     mk">
 <meta property="og:locale" content="cn">
+<meta property="article:published_time" content="2020-07-29T09:41:48.000Z">
+<meta property="article:modified_time" content="2020-07-29T10:34:51.186Z">
 <meta property="article:author" content="Z_Z">
+<meta property="article:tag" content="K8S">
+<meta property="article:tag" content="Ceph">
 <meta name="twitter:card" content="summary">
 
 
@@ -117,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://zzisstudent.github.io/archives/2017/"/>
+  <link rel="canonical" href="http://zzisstudent.github.io/存储测试/2020/07/29/K8S中如何使用Local-Volumes提供Block-Device配置Ceph集群/"/>
 
 
 
 
 
-  <title>Archive | Rookie</title>
+  <title>K8S中如何使用Local Volumes提供Block Device配置Ceph集群 | Rookie</title>
   
 
 
@@ -142,7 +146,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -270,74 +274,344 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
-
-      <span class="archive-page-counter">
-        
-        
-        
-          
-        
-        Um..! 5 posts in total. Keep on posting.
-      </span>
-
-      
-
-        
-        
-        
-
-        
-          
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2017">2017</h1>
-          </div>
-        
-        
-
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zzisstudent.github.io/%E5%AD%98%E5%82%A8%E6%B5%8B%E8%AF%95/2020/07/29/K8S%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Local-Volumes%E6%8F%90%E4%BE%9BBlock-Device%E9%85%8D%E7%BD%AECeph%E9%9B%86%E7%BE%A4/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Z_Z">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rookie">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/2017/04/21/%E7%BD%91%E7%BB%9C%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95%E4%B8%8Enetperf/" itemprop="url">
-              
-                <span itemprop="name">网络性能测试与netperf</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">K8S中如何使用Local Volumes提供Block Device配置Ceph集群</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-21T10:26:09+08:00"
-              content="2017-04-21" >
-          04-21
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2020-07-29T17:41:48+08:00">
+                2020-07-29
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%98%E5%82%A8%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index">
+                    <span itemprop="name">存储测试</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/%E5%AD%98%E5%82%A8%E6%B5%8B%E8%AF%95/2020/07/29/K8S%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Local-Volumes%E6%8F%90%E4%BE%9BBlock-Device%E9%85%8D%E7%BD%AECeph%E9%9B%86%E7%BE%A4/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count gitment-comments-count" data-xid="/%E5%AD%98%E5%82%A8%E6%B5%8B%E8%AF%95/2020/07/29/K8S%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Local-Volumes%E6%8F%90%E4%BE%9BBlock-Device%E9%85%8D%E7%BD%AECeph%E9%9B%86%E7%BE%A4/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
+      
 
+      
+        <p>为了能够在K8S环境中像VM或者Barebone一样部署Ceph集群，进行了此次验证(如果只是为了能够在K8S中使用Ceph集群，可以使用Rook进行部署，方式更加友好)</p>
+<h3 id="一-K8S中使用Local-Volume提供RAW-Block-Device"><a href="#一-K8S中使用Local-Volume提供RAW-Block-Device" class="headerlink" title="一. K8S中使用Local Volume提供RAW Block Device"></a>一. K8S中使用Local Volume提供RAW Block Device</h3><pre><code>- 创建Block Device(也可以直接使用host的硬盘)
+    truncate ~/disk.img --size 500M
+    mkfs -t ext4 ~/disk.img
+    sbin/losetup /dev/loop4 ~/disk.img
+    mkdir /mnt/disks
+    ln -s /dev/loop4 /mnt/disks/vol1
+- 创建Storage Class并应用
+    $ cat local-storageclass.yaml
+    kind: StorageClass
+    apiVersion: storage.k8s.io/v1
+    metadata:
+      name: local-storage
+    provisioner: kubernetes.io/no-provisioner
+    volumeBindingMode: WaitForFirstConsumer
+    $ kubectl apply -f local-storageclass.yaml
+- 创建PV并应用
+    $ cat local-pv.yaml
+    apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+    name: example-local-pv
+    spec:
+    capacity:
+      storage: 500M
+    volumeMode: Block
+    accessModes:
+    - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Delete
+    storageClassName: local-storage
+    local:
+      path: /mnt/disks/vol1
+    nodeAffinity:
+      required:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+            - slave
+    $ kubectl apply -f local-pv.yaml
+- 创建PVC并应用
+    $ cat local-pv-claim.yaml 
+    kind: PersistentVolumeClaim
+    apiVersion: v1
+    metadata:
+    name: example-local-claim
+    spec:
+    accessModes:
+    - ReadWriteOnce
+    storageClassName: local-storage
+    volumeMode: Block
+    resources:
+      requests:
+      storage: 500M
+    $ kubectl create ns ceph
+    $ kubectl apply -f local-pv-claim.yaml -n ceph
+- 创建Pod并检查
+    $ cat pod.yaml
+    apiVersion: v1
+    kind: Pod
+    metadata:
+    name: my-pod
+    spec:
+    containers:
+        - name: my-container
+        image: harbor.ln.ad/ceph/ceph:FS
+        volumeDevices:
+          - devicePath: /dev/xda
+          name: my-volume
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          capabilities:
+          add: [&quot;SYS_ADMIN&quot;]
+    volumes:
+        - name: my-volume
+        persistentVolumeClaim:
+          claimName: example-local-claim
+    $ kubectl -n ceph exec -it my-pod bash
+    $ ls /dev/ | grep xda</code></pre><h3 id="二-基于第一步，部署Ceph集群-只为验证osd节点能否添加，采用1-1-1的结构"><a href="#二-基于第一步，部署Ceph集群-只为验证osd节点能否添加，采用1-1-1的结构" class="headerlink" title="二. 基于第一步，部署Ceph集群(只为验证osd节点能否添加，采用1+1+1的结构)"></a>二. 基于第一步，部署Ceph集群(只为验证osd节点能否添加，采用1+1+1的结构)</h3><pre><code>- 部署Mon节点
+    参照[单节点Ceph集群部署](https)
+- 部署Mgr节点
+    参照[单节点Ceph集群部署](https)
+- 部署OSD节点
+    ceph-volume raw prepare --data /dev/xda --bluestore
+    ceph-volume raw activate --device /dev/xda --no-systemd
+- 将osd节点放在crush表内，且使其生效
+    ceph osd in osd.0
+    ceph-osd -i 0
+- 最终结果如下
+    [root@my-pod /]# ceph -s
+    cluster:
+        id:     ce0ec526-8818-4dc2-9efb-343599cd6660
+        health: HEALTH_ERR
+                Module &apos;devicehealth&apos; has failed:
+                1 monitors have not enabled msgr2
+
+    services:
+        mon: 1 daemons, quorum mon-2 (age 93m)
+        mgr: mgr-1(active, since 93m)
+        osd: 1 osds: 1 up (since 90m), 1 in (since 90m)
+
+    data:
+        pools:   0 pools, 0 pgs
+        objects: 0 objects, 0 B
+        usage:   5.9 MiB used, 494 MiB / 500 MiB avail
+        pgs:
+    [root@my-pod /]# ceph osd tree
+    ID  CLASS  WEIGHT   TYPE NAME        STATUS  REWEIGHT  PRI-AFF
+    -1         0.00049  root default
+    -3         0.00049      host my-pod
+    0    hdd  0.00049          osd.0        up   1.00000  1.00000</code></pre><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><pre><code>我之前使用Local Volume做过验证，当时给的结论是不能通过这种方式部署Ceph集群。现在回看，唯一的差异就在于OSD节点的部署方式，之前采用的是ceph-volume lvm create --data {deviceName}，而POD内已经有一层LVM，不能再创建一层LVM，这也是当时FAIL，且没找到解决方案。
+现在是采用了RAW去部署，结果可行，还是对于Ceph的了解不够导致的。</code></pre>
+      
     </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>一杯神仙水</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>Donate</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.png" alt="Z_Z WeChat Pay"/>
+        <p>WeChat Pay</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.png" alt="Z_Z Alipay"/>
+        <p>Alipay</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>Post author:</strong>
+    Z_Z
+  </li>
+  <li class="post-copyright-link">
+    <strong>Post link:</strong>
+    <a href="http://zzisstudent.github.io/%E5%AD%98%E5%82%A8%E6%B5%8B%E8%AF%95/2020/07/29/K8S%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Local-Volumes%E6%8F%90%E4%BE%9BBlock-Device%E9%85%8D%E7%BD%AECeph%E9%9B%86%E7%BE%A4/" title="K8S中如何使用Local Volumes提供Block Device配置Ceph集群">http://zzisstudent.github.io/%E5%AD%98%E5%82%A8%E6%B5%8B%E8%AF%95/2020/07/29/K8S%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Local-Volumes%E6%8F%90%E4%BE%9BBlock-Device%E9%85%8D%E7%BD%AECeph%E9%9B%86%E7%BE%A4/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>Copyright Notice: </strong>
+    All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> unless stating additionally.
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/K8S/" rel="tag"># K8S</a>
+          
+            <a href="/tags/Ceph/" rel="tag"># Ceph</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/2020/05/11/%E5%A6%82%E4%BD%95%E5%9C%A8%E6%9C%AC%E5%9C%B0%E7%94%9F%E6%88%90ceph-container%E7%9A%84docker-image/" rel="next" title="如何在本地生成ceph-container的docker image">
+                <i class="fa fa-chevron-left"></i> 如何在本地生成ceph-container的docker image
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -345,6 +619,17 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
 
         </div>
         
@@ -365,8 +650,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -436,6 +730,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一-K8S中使用Local-Volume提供RAW-Block-Device"><span class="nav-number">1.</span> <span class="nav-text">一. K8S中使用Local Volume提供RAW Block Device</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二-基于第一步，部署Ceph集群-只为验证osd节点能否添加，采用1-1-1的结构"><span class="nav-number">2.</span> <span class="nav-text">二. 基于第一步，部署Ceph集群(只为验证osd节点能否添加，采用1+1+1的结构)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -602,6 +912,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
@@ -648,6 +962,30 @@
 
     
 
+    
+      <script type="text/javascript">
+      function renderGitment(){
+        var gitment = new Gitmint({
+            id: decodeURI(window.location.pathname), 
+            owner: 'zzisstudent',
+            repo: 'blogComment',
+            
+            lang: "" || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+            
+            oauth: {
+            
+            
+                client_secret: '3d4313d54b5d410d67306918900ffa12456db0c1',
+            
+                client_id: '91304c25436c7ddd822a'
+            }});
+        gitment.render('gitment-container');
+      }
+
+      
+      renderGitment();
+      
+      </script>
     
 
 

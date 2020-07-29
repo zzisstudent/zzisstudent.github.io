@@ -169,4 +169,128 @@
         <tag>网络性能测试</tag>
       </tags>
   </entry>
+  <entry>
+    <title>K8S中如何使用Local Volumes提供Block Device配置Ceph集群</title>
+    <url>/%E5%AD%98%E5%82%A8%E6%B5%8B%E8%AF%95/2020/07/29/K8S%E4%B8%AD%E5%A6%82%E4%BD%95%E4%BD%BF%E7%94%A8Local-Volumes%E6%8F%90%E4%BE%9BBlock-Device%E9%85%8D%E7%BD%AECeph%E9%9B%86%E7%BE%A4/</url>
+    <content><![CDATA[<p>为了能够在K8S环境中像VM或者Barebone一样部署Ceph集群，进行了此次验证(如果只是为了能够在K8S中使用Ceph集群，可以使用Rook进行部署，方式更加友好)</p>
+<h3 id="一-K8S中使用Local-Volume提供RAW-Block-Device"><a href="#一-K8S中使用Local-Volume提供RAW-Block-Device" class="headerlink" title="一. K8S中使用Local Volume提供RAW Block Device"></a>一. K8S中使用Local Volume提供RAW Block Device</h3><pre><code>- 创建Block Device(也可以直接使用host的硬盘)
+    truncate ~/disk.img --size 500M
+    mkfs -t ext4 ~/disk.img
+    sbin/losetup /dev/loop4 ~/disk.img
+    mkdir /mnt/disks
+    ln -s /dev/loop4 /mnt/disks/vol1
+- 创建Storage Class并应用
+    $ cat local-storageclass.yaml
+    kind: StorageClass
+    apiVersion: storage.k8s.io/v1
+    metadata:
+      name: local-storage
+    provisioner: kubernetes.io/no-provisioner
+    volumeBindingMode: WaitForFirstConsumer
+    $ kubectl apply -f local-storageclass.yaml
+- 创建PV并应用
+    $ cat local-pv.yaml
+    apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+    name: example-local-pv
+    spec:
+    capacity:
+      storage: 500M
+    volumeMode: Block
+    accessModes:
+    - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Delete
+    storageClassName: local-storage
+    local:
+      path: /mnt/disks/vol1
+    nodeAffinity:
+      required:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+            - slave
+    $ kubectl apply -f local-pv.yaml
+- 创建PVC并应用
+    $ cat local-pv-claim.yaml 
+    kind: PersistentVolumeClaim
+    apiVersion: v1
+    metadata:
+    name: example-local-claim
+    spec:
+    accessModes:
+    - ReadWriteOnce
+    storageClassName: local-storage
+    volumeMode: Block
+    resources:
+      requests:
+      storage: 500M
+    $ kubectl create ns ceph
+    $ kubectl apply -f local-pv-claim.yaml -n ceph
+- 创建Pod并检查
+    $ cat pod.yaml
+    apiVersion: v1
+    kind: Pod
+    metadata:
+    name: my-pod
+    spec:
+    containers:
+        - name: my-container
+        image: harbor.ln.ad/ceph/ceph:FS
+        volumeDevices:
+          - devicePath: /dev/xda
+          name: my-volume
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          capabilities:
+          add: [&quot;SYS_ADMIN&quot;]
+    volumes:
+        - name: my-volume
+        persistentVolumeClaim:
+          claimName: example-local-claim
+    $ kubectl -n ceph exec -it my-pod bash
+    $ ls /dev/ | grep xda</code></pre><h3 id="二-基于第一步，部署Ceph集群-只为验证osd节点能否添加，采用1-1-1的结构"><a href="#二-基于第一步，部署Ceph集群-只为验证osd节点能否添加，采用1-1-1的结构" class="headerlink" title="二. 基于第一步，部署Ceph集群(只为验证osd节点能否添加，采用1+1+1的结构)"></a>二. 基于第一步，部署Ceph集群(只为验证osd节点能否添加，采用1+1+1的结构)</h3><pre><code>- 部署Mon节点
+    参照[单节点Ceph集群部署](https)
+- 部署Mgr节点
+    参照[单节点Ceph集群部署](https)
+- 部署OSD节点
+    ceph-volume raw prepare --data /dev/xda --bluestore
+    ceph-volume raw activate --device /dev/xda --no-systemd
+- 将osd节点放在crush表内，且使其生效
+    ceph osd in osd.0
+    ceph-osd -i 0
+- 最终结果如下
+    [root@my-pod /]# ceph -s
+    cluster:
+        id:     ce0ec526-8818-4dc2-9efb-343599cd6660
+        health: HEALTH_ERR
+                Module &apos;devicehealth&apos; has failed:
+                1 monitors have not enabled msgr2
+
+    services:
+        mon: 1 daemons, quorum mon-2 (age 93m)
+        mgr: mgr-1(active, since 93m)
+        osd: 1 osds: 1 up (since 90m), 1 in (since 90m)
+
+    data:
+        pools:   0 pools, 0 pgs
+        objects: 0 objects, 0 B
+        usage:   5.9 MiB used, 494 MiB / 500 MiB avail
+        pgs:
+    [root@my-pod /]# ceph osd tree
+    ID  CLASS  WEIGHT   TYPE NAME        STATUS  REWEIGHT  PRI-AFF
+    -1         0.00049  root default
+    -3         0.00049      host my-pod
+    0    hdd  0.00049          osd.0        up   1.00000  1.00000</code></pre><h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><pre><code>我之前使用Local Volume做过验证，当时给的结论是不能通过这种方式部署Ceph集群。现在回看，唯一的差异就在于OSD节点的部署方式，之前采用的是ceph-volume lvm create --data {deviceName}，而POD内已经有一层LVM，不能再创建一层LVM，这也是当时FAIL，且没找到解决方案。
+现在是采用了RAW去部署，结果可行，还是对于Ceph的了解不够导致的。</code></pre>]]></content>
+      <categories>
+        <category>存储测试</category>
+      </categories>
+      <tags>
+        <tag>K8S</tag>
+        <tag>Ceph</tag>
+      </tags>
+  </entry>
 </search>
