@@ -304,7 +304,10 @@ curl -s http://mirrors.aliyun.com/repo/Centos-8.repo -o /etc/yum.repos.d/centos.
 安装相关工具
 yum install -y yum-utils createrepo</code></pre><h3 id="二-获取相应的RPM"><a href="#二-获取相应的RPM" class="headerlink" title="二. 获取相应的RPM"></a>二. 获取相应的RPM</h3><pre><code>mkdir /centos_repo
 cd /centos_repo 
-reposync #根据/etc/yum.repos.d/centos.repo进行下载</code></pre><h3 id="三-创建本地Yum源"><a href="#三-创建本地Yum源" class="headerlink" title="三. 创建本地Yum源"></a>三. 创建本地Yum源</h3><pre><code>cd /centos_repo
+reposync --download-metadata#根据/etc/yum.repos.d/centos.repo进行下载
+这里选择直接下载阿里云源的metadata</code></pre><h3 id="三-创建本地Yum源"><a href="#三-创建本地Yum源" class="headerlink" title="三. 创建本地Yum源"></a>三. 创建本地Yum源</h3><pre><code>这一步需要注意的是，creatrepo创建的源无法名称中携带特殊字符的rpm(例如加号)
+网上看到一个解决方法，感觉很麻烦。所以在第二步选择了直接下载阿里云的metadata
+cd /centos_repo
 createrepo base
 createrepo AppStream</code></pre><h3 id="四-配置HTTP服务器"><a href="#四-配置HTTP服务器" class="headerlink" title="四. 配置HTTP服务器"></a>四. 配置HTTP服务器</h3><pre><code>参见[CentOS7安装配置HTTP服务器](https)
 将centos_repo的路径配置进去就可以了</code></pre><h3 id="五-更新Repo文件"><a href="#五-更新Repo文件" class="headerlink" title="五. 更新Repo文件"></a>五. 更新Repo文件</h3><pre><code>基于第一步下载的阿里云源repo，修改其中的IP地址，保持与本地信息一致即可</code></pre><p>至此，可以通过获取更新后的repo文件，然后使用本地源进行安装。</p>
