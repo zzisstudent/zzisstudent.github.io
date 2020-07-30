@@ -293,4 +293,28 @@
         <tag>Ceph</tag>
       </tags>
   </entry>
+  <entry>
+    <title>如何在本地搭建CentOS YUM源(基于阿里云源)</title>
+    <url>/%E5%9F%BA%E7%A1%80%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/2020/07/30/%E5%A6%82%E4%BD%95%E5%9C%A8%E6%9C%AC%E5%9C%B0%E6%90%AD%E5%BB%BACentOS-YUM%E6%BA%90-%E5%9F%BA%E4%BA%8E%E9%98%BF%E9%87%8C%E4%BA%91%E6%BA%90/</url>
+    <content><![CDATA[<p>本地搭建CentOS Yum源是为了便于更好的控制Package Version，同时避免网络问题导致的无法下载</p>
+<h3 id="一-准备环境"><a href="#一-准备环境" class="headerlink" title="一. 准备环境"></a>一. 准备环境</h3><pre><code>建议用docker做环境，便于控制Package的下载版本与后续期望一致。如果使用docker就用docker启动一个容器。
+删除/etc/yum.repos.d/下默认的repo文件，并使用阿里源进行替换
+rm -rf /etc/yum.repos.d/*
+curl -s http://mirrors.aliyun.com/repo/Centos-8.repo -o /etc/yum.repos.d/centos.repo
+安装相关工具
+yum install -y yum-utils createrepo</code></pre><h3 id="二-获取相应的RPM"><a href="#二-获取相应的RPM" class="headerlink" title="二. 获取相应的RPM"></a>二. 获取相应的RPM</h3><pre><code>mkdir /centos_repo
+cd /centos_repo 
+reposync #根据/etc/yum.repos.d/centos.repo进行下载</code></pre><h3 id="三-创建本地Yum源"><a href="#三-创建本地Yum源" class="headerlink" title="三. 创建本地Yum源"></a>三. 创建本地Yum源</h3><pre><code>cd /centos_repo
+createrepo base
+createrepo AppStream</code></pre><h3 id="四-配置HTTP服务器"><a href="#四-配置HTTP服务器" class="headerlink" title="四. 配置HTTP服务器"></a>四. 配置HTTP服务器</h3><pre><code>参见[CentOS7安装配置HTTP服务器](https)
+将centos_repo的路径配置进去就可以了</code></pre><h3 id="五-更新Repo文件"><a href="#五-更新Repo文件" class="headerlink" title="五. 更新Repo文件"></a>五. 更新Repo文件</h3><pre><code>基于第一步下载的阿里云源repo，修改其中的IP地址，保持与本地信息一致即可</code></pre><p>至此，可以通过获取更新后的repo文件，然后使用本地源进行安装。</p>
+]]></content>
+      <categories>
+        <category>基础环境搭建</category>
+      </categories>
+      <tags>
+        <tag>CentOS</tag>
+        <tag>Yum</tag>
+      </tags>
+  </entry>
 </search>
